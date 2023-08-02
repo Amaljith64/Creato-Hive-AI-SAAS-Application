@@ -1,3 +1,5 @@
+import Navbar from "@/components/navbar";
+import Sidebar from "@/components/sidebar";
 
 export default function DashboardLayout({children}: {children: React.ReactNode}) {
   return (
@@ -6,10 +8,11 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
         md:w-72 md:flex-col md:fixed md:inset-y-0
         z-[80] bg-gray-900">
             <div>
-                Hello slidebar
+                <Sidebar/>
             </div>
         </div>
         <main className="md:pl-72">
+            <Navbar/>
             Hello Content
             {children}
 
