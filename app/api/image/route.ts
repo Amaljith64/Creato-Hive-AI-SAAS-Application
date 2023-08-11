@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 
 const configuration = new Configuration({
@@ -38,8 +39,9 @@ export async function POST(
         }
 
         const freeTrail = await checkApiLimit()
+        const isPro = await checkSubscription()
 
-        if (!freeTrail) {
+        if (!freeTrail && !isPro) {
             return new NextResponse("Free trail has expired",{status:403});
         }
         
@@ -50,8 +52,10 @@ export async function POST(
             
         })
 
-        await increaseApiLimit()
+        if(!isPro){
 
+            await increaseApiLimit()
+        }
         return NextResponse.json(response.data.data)
     }catch (error){
         console.log("[IMAGE_ERROR]",error);

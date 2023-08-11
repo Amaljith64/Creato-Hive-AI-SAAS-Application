@@ -7,6 +7,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useProModal } from '@/hooks/use-pro-modal'
 import { ArrowRight, Check, Code, ImageIcon, MessageSquare, Music, Video, Zap } from "lucide-react";
 import { Button } from "./ui/button";
+import axios from "axios";
+import { useState } from "react";
 
 const ProModal = () => {
 
@@ -44,6 +46,23 @@ const ProModal = () => {
 
 
     const proModal = useProModal()
+    const [loading, setLoading] = useState(false)
+
+    const onSubscribe = async () => {
+      try{
+        setLoading(true)
+        const response = await axios.get("/api/stripe")
+
+        window.location.href = response.data.url;
+
+      }catch(error){
+        console.log(error,"STRIPE_CLIENT_ERROR")
+      }
+      finally{
+        setLoading(false)
+
+      }
+    }
   return (
     <div>
       <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -78,8 +97,9 @@ const ProModal = () => {
 
                 </DialogDescription>
             </DialogHeader>
-            <DialogFooter>
-              <Button 
+            <DialogFooter >
+              <Button
+              onClick={onSubscribe} 
               size="lg"
               variant="premium"
               className="w-full"
