@@ -9,6 +9,7 @@ import { ArrowRight, Check, Code, ImageIcon, MessageSquare, Music, Video, Zap } 
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 const ProModal = () => {
 
@@ -55,8 +56,8 @@ const ProModal = () => {
 
         window.location.href = response.data.url;
 
-      }catch(error){
-        console.log(error,"STRIPE_CLIENT_ERROR")
+      }catch(error){       
+          toast.error("Something went wrong")
       }
       finally{
         setLoading(false)
@@ -99,6 +100,7 @@ const ProModal = () => {
             </DialogHeader>
             <DialogFooter >
               <Button
+              disabled={loading}
               onClick={onSubscribe} 
               size="lg"
               variant="premium"
